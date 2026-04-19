@@ -6,6 +6,16 @@ appropriate data type using an enhanced pandas pipeline. The inferred
 types are presented in a React UI where the user can review, override,
 and re-process the file.
 
+## Live Demo
+
+| | URL |
+|---|---|
+| **Frontend** | https://rhombus-sanjana.vercel.app |
+| **Backend API** | https://rhombus-backend.onrender.com/api/ |
+| **Source** | https://github.com/sanjask11/Rhombus-Sanjana |
+
+The backend is hosted on Render's free tier, which spins down after 15 minutes of inactivity. The first request after an idle period takes ~30 seconds to wake up; subsequent requests are fast. The processing-history table resets on each restart since the free tier has ephemeral storage.
+
 ---
 
 ## Features
@@ -290,9 +300,39 @@ Integer columns containing nulls use pandas' nullable `Int64` dtype rather than 
 
 ---
 
-## Running Tests
+## Testing
 
-The full suite runs in under two seconds. From `backend/`, with the virtual environment active:
+### A. Try the live site (manual end-to-end test)
+
+This walks through every feature in about two minutes. Use the bundled S3 bucket `rhombus-test-sanjana-2026`, which has all seven test fixtures pre-uploaded.
+
+1. Open https://rhombus-sanjana.vercel.app
+2. In the bucket field, enter `rhombus-test-sanjana-2026` and click **Connect**
+3. The sidebar lists eight CSV files. Click **`all_types.csv`** and press **Process**
+4. Verify the column cards show:
+
+   | Column | Inferred type | Why it matters |
+   |---|---|---|
+   | `id` | Integer | Downcast to `uint8` (memory-aware) |
+   | `name` | Text | High-cardinality strings stay as text |
+   | `active` | Boolean | `yes`/`no` recognized as boolean |
+   | `score` | Integer | The `"N/A"` value becomes `null` (nullable `Int64`) |
+   | `grade` | Category | Low-cardinality A/B/C |
+   | `price` | Decimal | Float detection |
+   | `joined` | Date/Time | ISO date format |
+   | `session_length` | Time Delta | `"3 hours"`, `"2 days"` parsed as durations |
+
+5. Use the **dropdown** on the `score` column to change it to `Text`, then click **Apply Type Changes**. The column re-renders as Text — that's the override feature working.
+6. Click **Reset** to revert.
+7. Click **`signals.csv`** in the sidebar — the `amplitude` column should infer as **Complex Number** and `captured_at` as **Date/Time** with timezone preserved.
+8. Click **`messy_encoding.csv`** — non-ASCII characters (café, Zürich) load correctly thanks to the encoding fallback.
+9. The **History** panel at the bottom of the sidebar lists the files you just processed.
+
+If any of the above doesn't work, the backend may have spun down. Wait 30 seconds and retry.
+
+### B. Run the automated test suite locally
+
+The suite has 84 tests and runs in under two seconds. From `backend/`, with the virtual environment active:
 
 ```bash
 python -m pytest
@@ -303,9 +343,10 @@ For verbose output or to target one file:
 ```bash
 python -m pytest -v
 python -m pytest data_processor/tests/test_infer_data_types.py
+python -m pytest data_processor/tests/test_views.py -k "process"
 ```
 
-The suite is organized into five files:
+What each test file covers:
 
 | File | What it covers |
 |---|---|
@@ -314,6 +355,16 @@ The suite is organized into five files:
 | `test_views.py` | End-to-end API tests with a mocked S3 backend |
 | `test_sample_fixtures.py` | Asserts that every checked-in CSV in `test_data/` infers exactly the documented types |
 | `conftest.py` | Shared fixtures: mocked S3 client, pre-populated bucket |
+
+### C. Hit the live API directly
+
+You can confirm the backend is up without opening the frontend:
+
+```bash
+curl https://rhombus-backend.onrender.com/api/history/
+```
+
+You should get back `{"history":[...]}`. The first request after idle time takes ~30 seconds; subsequent ones are instant.
 
 ---
 
