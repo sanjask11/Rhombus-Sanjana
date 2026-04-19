@@ -1,0 +1,9 @@
+id,notes,mostly_null,scientific,negative_float,big_int
+1,first record,,1e5,-1.5,100000
+2,another row,filled,2e6,-2.7,250000
+3,unique note text,,3e7,-3.14,500000
+4,different comment,,4.2e5,-0.5,750000
+5,"unique, with comma",filled,5.5e6,-10.25,1000000
+6,another unique entry,,6e4,-0.001,1500000
+7,completely new line,,7.5e5,-100.5,2000000
+8,last note,,8.2e6,-200.0,3000000

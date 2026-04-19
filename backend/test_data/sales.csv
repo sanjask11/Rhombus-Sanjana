@@ -1,0 +1,11 @@
+order_id,customer,product,quantity,unit_price,total,order_date,shipped
+1001,Acme Corp,Widget,10,5.99,59.90,2024-01-15,true
+1002,Globex,Gadget,3,49.99,149.97,2024-01-16,true
+1003,Initech,Widget,25,5.99,149.75,2024-01-17,false
+1004,Umbrella,Gizmo,1,199.00,199.00,2024-01-18,true
+1005,Acme Corp,Gadget,5,49.99,249.95,2024-01-19,true
+1006,Hooli,Widget,100,5.99,599.00,2024-01-20,false
+1007,Globex,Gizmo,2,199.00,398.00,2024-01-21,true
+1008,Initech,Gadget,4,49.99,199.96,2024-01-22,true
+1009,Acme Corp,Widget,50,5.99,299.50,2024-01-23,false
+1010,Umbrella,Gadget,6,49.99,299.94,2024-01-24,true

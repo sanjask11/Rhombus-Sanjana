@@ -1,0 +1,7 @@
+true_false,yes_no,t_f,on_off,y_n,mixed_case
+true,yes,T,on,Y,TRUE
+false,no,F,off,N,False
+true,yes,T,on,Y,YES
+false,no,F,off,N,no
+true,yes,T,on,Y,TRUE
+false,no,F,off,N,No
