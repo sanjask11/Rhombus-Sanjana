@@ -6,17 +6,18 @@ const TYPE_OPTIONS = [
   { value: 'decimal',    label: 'Decimal' },
   { value: 'boolean',    label: 'Boolean' },
   { value: 'datetime64', label: 'Date/Time' },
+  { value: 'timedelta',  label: 'Time Delta' },
   { value: 'category',   label: 'Category' },
   { value: 'complex',    label: 'Complex Number' },
 ];
 
-// Map display_type → option value
 const DISPLAY_TO_VALUE = {
   'Text':           'text',
   'Integer':        'integer',
   'Decimal':        'decimal',
   'Boolean':        'boolean',
   'Date/Time':      'datetime64',
+  'Time Delta':     'timedelta',
   'Category':       'category',
   'Complex Number': 'complex',
 };
